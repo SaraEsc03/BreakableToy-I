@@ -8,7 +8,7 @@ import com.example.demo.model.Product;
 public interface ProductService {
     Product createProduct(Product product);
 
-    Product updateProduct(Long id, Product product);
+    Product updateProduct(Integer id, Product product);
 
     List <Product> getProducts(
         Optional<String> nameFilter,
@@ -19,9 +19,9 @@ public interface ProductService {
         int page
     );
 
-    Product markOutOfStock (Long id);
+    Product markOutOfStock (Integer id);
 
-    Product markInStock (Long id);
+    Product markInStock (Integer id);
     
 
 

@@ -1,40 +1,157 @@
 package com.example.demo.service;
 
+import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.example.demo.model.Product;
+import com.example.demo.repository.ProductRepository;
 
 @Service
+//Impl vas a usar los metodos de ProductService
 public class ProductServiceImpl implements ProductService {
 
+    //atributo de la clase Impl que define donde se manejan los datos
+    private final ProductRepository pr;
+
+    // Impl trabaja con ESTE productRepository de la clase ProductRepository lol (recuerda que es una clase
+    // y se le tiene que poner nombre por eso el "pr" y el contexto con this)
+    //Esto es un ejemplo de inyeccion de dependencias jujuju
+    public ProductServiceImpl(ProductRepository pr) {
+        this.pr = pr;
+    }
+
+
+    //METODOS IMPLEMENTADOS
+
+    //CREATE PRODUCT
     @Override
     public Product createProduct(Product product) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        boolean savedValue = pr.saveNewProduct(product);
+
+        if (!savedValue) {
+            throw new IllegalArgumentException("This product already exists");
+        }
+
+        product.setCreationDate(LocalDate.now());
+        product.setUpdateDate(LocalDate.now());
+
+        return product;
     }
 
+    //UPDATE PRODUCT
     @Override
-    public Product updateProduct(Long id, Product product) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Product updateProduct(Integer id, Product product) {
+        boolean savedValue = pr.saveNewProduct(product);
+
+        if (!savedValue) {
+            throw new IllegalArgumentException("This product doesn't exist");
+        }
+
+        pr.updateById(id, product);
+        product.setUpdateDate(LocalDate.now());
+        return product;
     }
 
+    //MARK OUT OF STOCK
     @Override
-    public List<Product> getProducts(Optional<String> nameFilter, Optional<List<String>> categoryFilter, Optional<Boolean> inStockFilter, Optional<String> Sort1, Optional<String> Sort2, int page) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Product markOutOfStock(Integer id) {
+        Product product=pr.findProductById(id);
+        Integer stock=product.getQuantityInStock();
+        if(stock!=0){
+            product.setQuantityInStock(0);
+        }else{
+            throw new IllegalStateException("This product is already out of stock");
+        }
+        return product;
     }
 
+    //MARK IN STOCK
     @Override
-    public Product markOutOfStock(Long id) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Product markInStock(Integer id) {
+        Product product=pr.findProductById(id);
+        Integer stock=product.getQuantityInStock();
+        if(stock!=0){
+            throw new IllegalStateException("This product is already in stock");
+        } else{
+            product.setQuantityInStock(10);
+        }
+        return product;
     }
 
+    //FILTERS AND SORTS
     @Override
-    public Product markInStock(Long id) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public List<Product> getProducts(Optional<String> nameFilter,
+            Optional<List<String>> categoryFilter, Optional<Boolean> inStockFilter,
+            Optional<String> Sort1, Optional<String> Sort2, int page) {
+        List<Product> productsList = pr.findAll();
+
+        //NAME FILTER
+        if (nameFilter.isPresent()) {
+            String subText = nameFilter.get().toLowerCase();
+
+            productsList = productsList.stream().
+                    filter(p -> p.getName().toLowerCase().contains(subText)).
+                    toList();
+        }
+
+        //CATEGORIES FILTER
+        if (categoryFilter.isPresent() && !categoryFilter.isEmpty()) {
+            List<String> categories = categoryFilter.get();
+
+            productsList = productsList.stream().
+                    filter(p -> categories.stream().anyMatch(c -> c.equalsIgnoreCase(p.getCategory()))).toList();
+        }
+
+        //INSTOCK FILTER
+        if (inStockFilter.isPresent()) {
+            boolean availability = inStockFilter.get();
+
+            productsList = productsList.stream().
+                    filter(p -> availability ? p.getQuantityInStock() > 0
+                    : p.getQuantityInStock() == 0).toList();
+        }
+
+        //SORTS
+        if (Sort1.isPresent()) {
+            Comparator<Product> cmp = buildComparator(Sort1.get());
+            if (Sort2.isPresent()) {
+                cmp = cmp.thenComparing(buildComparator(Sort2.get()));
+            };
+
+            productsList = productsList.stream().sorted(cmp).toList();
+        }
+
+        //PAGES(10 PRODUCTS PER PAGE)
+        int productsPerPage=10;
+        int x= Math.max(0,page)*productsPerPage;
+        int y=Math.min(x+productsPerPage,productsList.size());
+        
+        return productsList.subList(x, y);
     }
 
+    //COMPARATOR FUNCTION
+    private Comparator<Product> buildComparator(String sortGet) {
+        return switch (sortGet.toLowerCase()) {
+            case "name" ->
+                Comparator.comparing(Product::getName, String.CASE_INSENSITIVE_ORDER);
+            case "category" ->
+                Comparator.comparing(Product::getCategory, String.CASE_INSENSITIVE_ORDER);
+            case "price" ->
+                Comparator.comparingDouble(Product::getPrice);
+            case "expirationdate" ->
+                Comparator.comparing(Product::getExpirationDate, Comparator.nullsLast(Comparator.naturalOrder()));
+            case "quantityinstock" ->
+                Comparator.comparingInt(Product::getQuantityInStock);
+
+            default ->
+                throw new IllegalArgumentException("Criterio de orden no válido");
+        };
 
     }
-    
+;
+
+}
