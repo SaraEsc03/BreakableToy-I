@@ -1,8 +1,10 @@
 package com.example.demo.repository;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.stereotype.Repository;
 
@@ -10,7 +12,8 @@ import com.example.demo.model.Product;
 
 @Repository
 public class ProductRepository {
-    private Map<Integer,Product> productMap= new HashMap<>();  
+    private Map<Integer,Product> productMap= new HashMap<>();
+    private Set<String> categories= new HashSet<>();
     
     public Product findProductById(Integer id){
         return productMap.get(id);
@@ -26,6 +29,7 @@ public class ProductRepository {
         
         if (!exists){
             productMap.put(idCounter, product);
+            categories.add(product.getCategory());
             idCounter++;
             return true;
         }else{
@@ -49,6 +53,10 @@ public class ProductRepository {
         }else{
             return false;
         }
+    }
+
+    public Set<String> getCategories() {
+        return categories;
     }
 
         

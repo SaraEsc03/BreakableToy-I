@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dto.Metrics;
 import com.example.demo.model.Product;
 import com.example.demo.repository.ProductRepository;
 
@@ -24,9 +25,7 @@ public class ProductServiceImpl implements ProductService {
         this.pr = pr;
     }
 
-
     //METODOS IMPLEMENTADOS
-
     //CREATE PRODUCT
     @Override
     public Product createProduct(Product product) {
@@ -59,11 +58,11 @@ public class ProductServiceImpl implements ProductService {
     //MARK OUT OF STOCK
     @Override
     public Product markOutOfStock(Integer id) {
-        Product product=pr.findProductById(id);
-        Integer stock=product.getQuantityInStock();
-        if(stock!=0){
+        Product product = pr.findProductById(id);
+        Integer stock = product.getQuantityInStock();
+        if (stock != 0) {
             product.setQuantityInStock(0);
-        }else{
+        } else {
             throw new IllegalStateException("This product is already out of stock");
         }
         return product;
@@ -72,11 +71,11 @@ public class ProductServiceImpl implements ProductService {
     //MARK IN STOCK
     @Override
     public Product markInStock(Integer id) {
-        Product product=pr.findProductById(id);
-        Integer stock=product.getQuantityInStock();
-        if(stock!=0){
+        Product product = pr.findProductById(id);
+        Integer stock = product.getQuantityInStock();
+        if (stock != 0) {
             throw new IllegalStateException("This product is already in stock");
-        } else{
+        } else {
             product.setQuantityInStock(10);
         }
         return product;
@@ -126,10 +125,10 @@ public class ProductServiceImpl implements ProductService {
         }
 
         //PAGES(10 PRODUCTS PER PAGE)
-        int productsPerPage=10;
-        int x= Math.max(0,page)*productsPerPage;
-        int y=Math.min(x+productsPerPage,productsList.size());
-        
+        int productsPerPage = 10;
+        int x = Math.max(0, page) * productsPerPage;
+        int y = Math.min(x + productsPerPage, productsList.size());
+
         return productsList.subList(x, y);
     }
 
@@ -152,6 +151,52 @@ public class ProductServiceImpl implements ProductService {
         };
 
     }
-;
+
+    ;
+    @Override
+    public Metrics getMetrics() {
+        Metrics dto = new Metrics();
+
+        Metrics.CategoryMetrics overall = new Metrics.CategoryMetrics();
+        int overallProducts = 0;
+        int overallStock = 0;
+        double overallValue = 0.0;
+
+        for (String category : pr.getCategories()) {
+            List<Product> productsInCategory = pr.findAll().stream()
+                    .filter(p -> p.getCategory().equalsIgnoreCase(category))
+                    .toList();
+
+            int totalProducts = productsInCategory.size();
+            int totalStock = productsInCategory.stream().mapToInt(Product::getQuantityInStock).sum();
+            double totalValue = productsInCategory.stream()
+                    .mapToDouble(p -> p.getQuantityInStock() * p.getPrice())
+                    .sum();
+            double averagePrice = totalProducts > 0
+                    ? productsInCategory.stream().mapToDouble(Product::getPrice).average().orElse(0.0)
+                    : 0.0;
+
+            Metrics.CategoryMetrics categoryMetrics = new Metrics.CategoryMetrics(
+                    totalProducts, totalStock, totalValue, averagePrice
+            );
+
+            dto.getCategoryMetrics().put(category, categoryMetrics);
+
+            overallProducts += totalProducts;
+            overallStock += totalStock;
+            overallValue += totalValue;
+        }
+
+        double overallAveragePrice = overallProducts > 0 ? overallValue / overallStock : 0.0;
+
+        overall.setTotalProducts(overallProducts);
+        overall.setTotalStock(overallStock);
+        overall.setTotalValue(overallValue);
+        overall.setAveragePrice(overallAveragePrice);
+
+        dto.setOverallMetrics(overall);
+
+        return dto;
+    }
 
 }

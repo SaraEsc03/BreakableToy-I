@@ -74,7 +74,6 @@ public class Product {
 
     public void setUpdateDate(LocalDate updateDate) {
         this.UpdateDate = updateDate;
-
     }
 
     public void setQuantityInStock(Integer quantity) {
