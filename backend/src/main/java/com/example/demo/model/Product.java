@@ -18,65 +18,65 @@ public class Product {
 
     @Size(max = 120)
     @NotNull
-    private String Name;
+    private String name;
 
     @NotNull
-    private String Category;
+    private String category;
 
     @NotNull
     @Min(value = 0)
-    private float Price;
+    private float price;
 
     @FutureOrPresent
-    private LocalDate ExpirationDate;
+    private LocalDate expirationDate;
 
     @NotNull
     @Min(value = 0)
-    private int QuantityInStock;
+    private int quantityInStock;
 
-    private LocalDate CreationDate;
+    private LocalDate creationDate;
 
-    private LocalDate UpdateDate;
+    private LocalDate updateDate;
 
     // CONSTRUCTOR
-    public Product(Integer id, String Name, String Category, float Price, LocalDate ExpirationDate, int QuantityInStock) {
+    public Product(Integer id, String name, String category, float price, LocalDate expirationDate, int quantityInStock) {
         this.id = id;
-        this.Name = Name;
-        this.Category = Category;
-        this.Price = Price;
-        this.ExpirationDate = ExpirationDate;
-        this.QuantityInStock = QuantityInStock;
+        this.name = name;
+        this.category = category;
+        this.price = price;
+        this.expirationDate = expirationDate;
+        this.quantityInStock = quantityInStock;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public String getCategory() {
-        return Category;
+        return category;
     }
 
     public float getPrice() {
-        return Price;
+        return price;
     }
 
     public LocalDate getExpirationDate() {
-        return ExpirationDate;
+        return expirationDate;
     }
 
     public Integer getQuantityInStock() {
-        return QuantityInStock;
+        return quantityInStock;
     }
 
     public void setCreationDate(LocalDate creationDate) {
-        this.CreationDate = creationDate;
+        this.creationDate = creationDate;
     }
 
     public void setUpdateDate(LocalDate updateDate) {
-        this.UpdateDate = updateDate;
+        this.updateDate = updateDate;
     }
 
     public void setQuantityInStock(Integer quantity) {
-        this.QuantityInStock = quantity;
+        this.quantityInStock = quantity;
     }
 }
