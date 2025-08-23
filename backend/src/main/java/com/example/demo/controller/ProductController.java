@@ -30,7 +30,7 @@ public class ProductController {
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
-
+    
     @GetMapping
     public ResponseEntity<?> getProducts(
             @RequestParam(required = false) String name,

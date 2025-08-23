@@ -39,7 +39,7 @@ public class ProductServiceImpl implements ProductService {
     //UPDATE PRODUCT
     @Override
     public Product updateProduct(Integer id, Product product) {
-        boolean savedValue = pr.saveNewProduct(product);
+        boolean savedValue = pr.updateById(id, product);
 
         if (!savedValue) {
             throw new IllegalArgumentException("This product doesn't exist");

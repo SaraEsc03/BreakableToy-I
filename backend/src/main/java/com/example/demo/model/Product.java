@@ -2,9 +2,6 @@ package com.example.demo.model;
 
 import java.time.LocalDate;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -12,8 +9,6 @@ import jakarta.validation.constraints.Size;
 
 public class Product {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @Size(max = 120)
@@ -39,8 +34,7 @@ public class Product {
     private LocalDate updateDate;
 
     // CONSTRUCTOR
-    public Product(Integer id, String name, String category, float price, LocalDate expirationDate, int quantityInStock) {
-        this.id = id;
+    public Product(String name, String category, float price, LocalDate expirationDate, int quantityInStock) {
         this.name = name;
         this.category = category;
         this.price = price;
@@ -79,4 +73,13 @@ public class Product {
     public void setQuantityInStock(Integer quantity) {
         this.quantityInStock = quantity;
     }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
 }

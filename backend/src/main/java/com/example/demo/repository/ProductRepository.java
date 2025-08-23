@@ -31,6 +31,7 @@ public class ProductRepository {
         boolean exists = productMap.values().stream().anyMatch(p -> p.getName().equalsIgnoreCase(product.getName()));
 
         if (!exists) {
+            product.setId(idCounter);
             productMap.put(idCounter, product);
             categories.add(product.getCategory());
             idCounter++;
@@ -50,9 +51,11 @@ public class ProductRepository {
     }
 
     public Boolean updateById(Integer id, Product product) {
-        productMap.containsKey(id);
-        productMap.replace(id, product);
-        return true;
+        if(productMap.containsKey(id)){
+            product.setId(id);
+            productMap.put(id,product);
+            return true;
+        }return false;
     }
 
     public Set<String> getCategories() {
