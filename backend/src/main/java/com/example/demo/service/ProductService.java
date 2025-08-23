@@ -25,6 +25,8 @@ public interface ProductService {
 
     Product markInStock(Integer id);
 
+    Product deleteById(Integer id);
+
     Metrics getMetrics();
 
 }

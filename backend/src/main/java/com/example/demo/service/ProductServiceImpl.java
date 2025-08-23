@@ -55,6 +55,19 @@ public class ProductServiceImpl implements ProductService {
         return product;
     }
 
+    //DELETE PRODUCT
+    @Override
+    public Product deleteById(Integer id) {
+        Product product = pr.findProductById(id);
+
+        if (product == null) {
+            throw new IllegalArgumentException("This product doesn't exist");
+        } else {
+            pr.deleteById(id);
+            return product;
+        }
+    } 
+
     //MARK OUT OF STOCK
     @Override
     public Product markOutOfStock(Integer id) {
@@ -153,6 +166,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     ;
+
+    //METRICS
     @Override
     public Metrics getMetrics() {
         Metrics dto = new Metrics();
@@ -198,5 +213,7 @@ public class ProductServiceImpl implements ProductService {
 
         return dto;
     }
+
+    
 
 }

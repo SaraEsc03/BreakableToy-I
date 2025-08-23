@@ -1,4 +1,5 @@
 package com.example.demo.repository;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,53 +13,50 @@ import com.example.demo.model.Product;
 
 @Repository
 public class ProductRepository {
-    private Map<Integer,Product> productMap= new HashMap<>();
-    private Set<String> categories= new HashSet<>();
-    
-    public Product findProductById(Integer id){
+
+    private Map<Integer, Product> productMap = new HashMap<>();
+    private Set<String> categories = new HashSet<>();
+
+    public Product findProductById(Integer id) {
         return productMap.get(id);
     }
 
-    public List<Product> findAll(){
+    public List<Product> findAll() {
         return new ArrayList<>(productMap.values());
     }
 
-    private int idCounter=1;
-    public Boolean saveNewProduct(Product product){
-        boolean exists=productMap.values().stream().anyMatch(p->p.getName().equalsIgnoreCase(product.getName()));
-        
-        if (!exists){
+    private int idCounter = 1;
+
+    public Boolean saveNewProduct(Product product) {
+        boolean exists = productMap.values().stream().anyMatch(p -> p.getName().equalsIgnoreCase(product.getName()));
+
+        if (!exists) {
             productMap.put(idCounter, product);
             categories.add(product.getCategory());
             idCounter++;
             return true;
-        }else{
+        } else {
             return false;
         }
     }
-    
-    public Boolean deleteById(Integer id){
-        if(productMap.containsKey(id)){
+
+    public Boolean deleteById(Integer id) {
+        if (productMap.containsKey(id)) {
             productMap.remove(id);
             return true;
-        }else{
+        } else {
             return false;
         }
-    }    
+    }
 
-    public Boolean updateById(Integer id, Product product){
-        if(productMap.containsKey(id)){
-            productMap.replace(id, product);
-            return true;
-        }else{
-            return false;
-        }
+    public Boolean updateById(Integer id, Product product) {
+        productMap.containsKey(id);
+        productMap.replace(id, product);
+        return true;
     }
 
     public Set<String> getCategories() {
         return categories;
     }
 
-        
-
-    }
+}
