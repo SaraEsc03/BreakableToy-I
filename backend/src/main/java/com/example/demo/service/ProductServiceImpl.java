@@ -12,20 +12,15 @@ import com.example.demo.model.Product;
 import com.example.demo.repository.ProductRepository;
 
 @Service
-//Impl vas a usar los metodos de ProductService
 public class ProductServiceImpl implements ProductService {
 
-    //atributo de la clase Impl que define donde se manejan los datos
     private final ProductRepository pr;
 
-    // Impl trabaja con ESTE productRepository de la clase ProductRepository lol (recuerda que es una clase
-    // y se le tiene que poner nombre por eso el "pr" y el contexto con this)
-    //Esto es un ejemplo de inyeccion de dependencias jujuju
     public ProductServiceImpl(ProductRepository pr) {
         this.pr = pr;
     }
 
-    //METODOS IMPLEMENTADOS
+    //IMPLEMENTED METHODS
     //CREATE PRODUCT
     @Override
     public Product createProduct(Product product) {

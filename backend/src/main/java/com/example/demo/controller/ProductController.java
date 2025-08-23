@@ -40,7 +40,6 @@ public class ProductController {
             @RequestParam(required = false) String sort2,
             @RequestParam(defaultValue = "0") int page
     ) {
-        // Obtener productos filtrados/paginados
         List<Product> products = productService.getProducts(
                 Optional.ofNullable(name),
                 Optional.ofNullable(category),
@@ -50,15 +49,13 @@ public class ProductController {
                 page
         );
 
-        // Obtener métricas
         Metrics metrics = productService.getMetrics();
 
-        // Construir respuesta combinada
         Map<String, Object> response = new HashMap<>();
         response.put("products", products);
         response.put("metrics", metrics);
         response.put("currentPage", page);
-        response.put("productsPerPage", 10); // mismo valor que en tu service
+        response.put("productsPerPage", 10); 
 
         return ResponseEntity.ok(response);
     }
