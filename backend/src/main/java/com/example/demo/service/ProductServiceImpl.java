@@ -72,10 +72,6 @@ public class ProductServiceImpl implements ProductService {
             throw new IllegalArgumentException("This product doesn't exist");
         }
 
-        if (product.getQuantityInStock() == 0) {
-            throw new IllegalStateException("This product is already out of stock");
-        }
-
         product.setPreviousQuantity(product.getQuantityInStock());
 
         product.setQuantityInStock(0);
