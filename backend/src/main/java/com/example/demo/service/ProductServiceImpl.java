@@ -61,18 +61,26 @@ public class ProductServiceImpl implements ProductService {
             pr.deleteById(id);
             return product;
         }
-    } 
+    }
 
     //MARK OUT OF STOCK
     @Override
     public Product markOutOfStock(Integer id) {
         Product product = pr.findProductById(id);
-        Integer stock = product.getQuantityInStock();
-        if (stock != 0) {
-            product.setQuantityInStock(0);
-        } else {
+
+        if (product == null) {
+            throw new IllegalArgumentException("This product doesn't exist");
+        }
+
+        if (product.getQuantityInStock() == 0) {
             throw new IllegalStateException("This product is already out of stock");
         }
+
+        product.setPreviousQuantity(product.getQuantityInStock());
+
+        product.setQuantityInStock(0);
+
+        pr.updateById(id, product);
         return product;
     }
 
@@ -80,12 +88,20 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product markInStock(Integer id) {
         Product product = pr.findProductById(id);
-        Integer stock = product.getQuantityInStock();
-        if (stock != 0) {
-            throw new IllegalStateException("This product is already in stock");
-        } else {
-            product.setQuantityInStock(10);
+
+        if (product == null) {
+            throw new IllegalArgumentException("This product doesn't exist");
         }
+
+        if (product.getQuantityInStock() > 0) {
+            throw new IllegalStateException("This product is already in stock");
+        }
+
+        int restoreStock = product.getPreviousQuantity() != null ? product.getPreviousQuantity() : 10;
+
+        product.setQuantityInStock(restoreStock);
+
+        pr.updateById(id, product);
         return product;
     }
 
@@ -208,7 +224,5 @@ public class ProductServiceImpl implements ProductService {
 
         return dto;
     }
-
-    
 
 }

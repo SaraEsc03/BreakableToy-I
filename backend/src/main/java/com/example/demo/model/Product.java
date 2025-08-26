@@ -29,6 +29,8 @@ public class Product {
     @Min(value = 0)
     private int quantityInStock;
 
+    private Integer previousQuantity; 
+
     private LocalDate creationDate;
 
     private LocalDate updateDate;
@@ -40,6 +42,7 @@ public class Product {
         this.price = price;
         this.expirationDate = expirationDate;
         this.quantityInStock = quantityInStock;
+        this.previousQuantity = quantityInStock; 
     }
 
     public String getName() {
@@ -82,4 +85,12 @@ public class Product {
         return id;
     }
 
+    // NUEVO
+    public Integer getPreviousQuantity() {
+        return previousQuantity;
+    }
+
+    public void setPreviousQuantity(Integer previousQuantity) {
+        this.previousQuantity = previousQuantity;
+    }
 }
