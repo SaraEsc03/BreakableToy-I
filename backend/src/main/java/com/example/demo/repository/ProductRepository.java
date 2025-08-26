@@ -55,7 +55,8 @@ public class ProductRepository {
             product.setId(id);
             productMap.put(id,product);
             return true;
-        }return false;
+        }
+        return false;
     }
 
     public Set<String> getCategories() {
