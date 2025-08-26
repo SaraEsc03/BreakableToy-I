@@ -8,7 +8,7 @@ export default function Onboarding() {
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
       <h1>Welcome to the inventory!</h1>
       <p>Start organizing your products </p>
-      <Button onClick={() => navigate('/products')}>Start Here</Button>
+      <Button onClick={() => navigate('/product')}>Start Here</Button>
     </div>
   );
 }
