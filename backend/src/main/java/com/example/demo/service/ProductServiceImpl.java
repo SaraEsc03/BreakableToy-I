@@ -174,6 +174,11 @@ public class ProductServiceImpl implements ProductService {
 
     ;
 
+    @Override
+    public int getAllProducts() {
+        return pr.findAll().size();
+    }
+
     //METRICS
     @Override
     public Metrics getMetrics() {

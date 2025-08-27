@@ -12,6 +12,8 @@ public interface ProductService {
 
     Product updateProduct(Integer id, Product product);
 
+    int getAllProducts();
+
     List<Product> getProducts(
             Optional<String> nameFilter,
             Optional<List<String>> categoryFilter,

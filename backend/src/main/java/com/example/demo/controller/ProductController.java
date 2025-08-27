@@ -50,11 +50,14 @@ public class ProductController {
         );
 
         Metrics metrics = productService.getMetrics();
+        int totalProducts = productService.getAllProducts();
+
 
         Map<String, Object> response = new HashMap<>();
         response.put("products", products);
         response.put("metrics", metrics);
         response.put("currentPage", page);
+        response.put("total", totalProducts);
         response.put("productsPerPage", 10); 
 
         return ResponseEntity.ok(response);
