@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { getProducts } from "../services/productService";
 import ProductForm from "./ProductForm";
 import CustomTable from "../components/DataTable";
+import ProductFilters from "../components/ProductFilters";
 
 export default function Products() {
   const [products, setProducts] = useState<any[]>([]);
@@ -12,19 +13,45 @@ export default function Products() {
   const [sort1, setSort1] = useState<string | undefined>(undefined);
   const [sort2, setSort2] = useState<string | undefined>(undefined);
 
+  const [filters, setFilters] = useState<{
+    name?: string;
+    category?: string;
+    inStock?: boolean;
+  }>({});
+
+  // Categories for the filter dropdown
+  const [categories, setCategories] = useState<string[]>([]);
+
+  // Fetch products from backend
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const result = await getProducts({ page, sort1, sort2 });
+      const result = await getProducts({
+        page,
+        sort1,
+        sort2,
+        ...filters,
+      });
       setProducts(result.products || []);
-      setTotalRows(result.total); 
-      console.log(result);
+      setTotalRows(result.total || 0);
+
+      // Update categories from current products
+      const cats: string[] = Array.from(
+        new Set((result.products || []).map((p: any) => String(p.category)))
+      );
+      setCategories(cats);
     } finally {
       setLoading(false);
     }
   };
 
-  // Manejo de doble ordenamiento
+  // Handle search/filter from ProductFilters
+  const handleSearch = (newFilters: typeof filters) => {
+    setFilters(newFilters);
+    setPage(0); // Reset page to 0 when applying new filters
+  };
+
+  // Sorting logic (double sort)
   const handleSort = (column: any) => {
     if (!sort1) {
       setSort1(column.name);
@@ -48,9 +75,10 @@ export default function Products() {
     setSort2(undefined);
   };
 
+  // Fetch products when page, sort, or filters change
   useEffect(() => {
     fetchProducts();
-  }, [page, sort1, sort2]);
+  }, [page, sort1, sort2, filters]);
 
   return (
     <div>
@@ -60,10 +88,14 @@ export default function Products() {
       {showForm && (
         <ProductForm
           onClose={() => setShowForm(false)}
-          onCreated={fetchProducts}
+          onCreated={fetchProducts} // Refresh products after creating
         />
       )}
 
+      {/* Filter component */}
+      <ProductFilters onSearch={handleSearch} categories={categories} />
+
+      {/* Table component */}
       <CustomTable
         data={products}
         loading={loading}
