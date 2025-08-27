@@ -13,7 +13,7 @@ export default function ProductFilters({ onSearch, categories }: Props) {
   const handleSearch = () => {
     onSearch({
       name: name.trim() || undefined,
-      category: selectedCategory || undefined, // <-- single string, not array
+      category: selectedCategory || undefined, 
       inStock:
         stockStatus === "all" ? undefined : stockStatus === "in" ? true : false,
     });

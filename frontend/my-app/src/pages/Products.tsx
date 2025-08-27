@@ -3,6 +3,7 @@ import { getProducts } from "../services/productService";
 import ProductForm from "./ProductForm";
 import CustomTable from "../components/DataTable";
 import ProductFilters from "../components/ProductFilters";
+import MetricsTable from "../components/MetricsTable"; // <-- import
 
 export default function Products() {
   const [products, setProducts] = useState<any[]>([]);
@@ -19,10 +20,13 @@ export default function Products() {
     inStock?: boolean;
   }>({});
 
-  // Categories for the filter dropdown
   const [categories, setCategories] = useState<string[]>([]);
+  const [metrics, setMetrics] = useState<any>({
+    overallMetrics: { totalProducts: 0, totalStock: 0, totalValue: 0, averagePrice: 0 },
+    categoryMetrics: {},
+  });
 
-  // Fetch products from backend
+  // Fetch products + metrics
   const fetchProducts = async () => {
     setLoading(true);
     try {
@@ -32,10 +36,12 @@ export default function Products() {
         sort2,
         ...filters,
       });
+
       setProducts(result.products || []);
       setTotalRows(result.total || 0);
+      setMetrics(result.metrics || metrics);
 
-      // Update categories from current products
+      // Update categories from all products
       const cats: string[] = Array.from(
         new Set((result.products || []).map((p: any) => String(p.category)))
       );
@@ -45,13 +51,11 @@ export default function Products() {
     }
   };
 
-  // Handle search/filter from ProductFilters
   const handleSearch = (newFilters: typeof filters) => {
     setFilters(newFilters);
-    setPage(0); // Reset page to 0 when applying new filters
+    setPage(0); // reset page
   };
 
-  // Sorting logic (double sort)
   const handleSort = (column: any) => {
     if (!sort1) {
       setSort1(column.name);
@@ -75,7 +79,6 @@ export default function Products() {
     setSort2(undefined);
   };
 
-  // Fetch products when page, sort, or filters change
   useEffect(() => {
     fetchProducts();
   }, [page, sort1, sort2, filters]);
@@ -83,19 +86,20 @@ export default function Products() {
   return (
     <div>
       <h2>Products Inventory</h2>
-      <button onClick={() => setShowForm(true)}>Add Product</button>
 
       {showForm && (
         <ProductForm
           onClose={() => setShowForm(false)}
-          onCreated={fetchProducts} // Refresh products after creating
+          onCreated={fetchProducts}
         />
       )}
-
-      {/* Filter component */}
+      
+      
       <ProductFilters onSearch={handleSearch} categories={categories} />
 
-      {/* Table component */}
+      <button onClick={() => setShowForm(true)}>Add Product</button>
+
+
       <CustomTable
         data={products}
         loading={loading}
@@ -108,6 +112,9 @@ export default function Products() {
         totalRows={totalRows}
         onPageChange={setPage}
       />
+      
+      <MetricsTable metrics={metrics} />
+      
     </div>
   );
 }
