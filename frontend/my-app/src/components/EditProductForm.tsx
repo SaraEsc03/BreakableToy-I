@@ -76,3 +76,4 @@ export default function EditProductForm({ product, onClose, onUpdated }: Props) 
     </div>
   );
 }
+

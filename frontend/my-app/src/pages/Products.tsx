@@ -5,6 +5,8 @@ import CustomTable from "../components/DataTable";
 import ProductFilters from "../components/ProductFilters";
 import MetricsTable from "../components/MetricsTable"; // <-- import
 import EditProductForm from "../components/EditProductForm";
+import '../App.css';
+
 
 export default function Products() {
   const [products, setProducts] = useState<any[]>([]);
@@ -88,7 +90,7 @@ const [deleteProductId, setDeleteProductId] = useState<number | null>(null);
   }, [page, sort1, sort2, filters]);
 
   return (
-  <div>
+  <div id="products-page">
     <h2>Products Inventory</h2>
 
     {showForm && (
@@ -100,7 +102,7 @@ const [deleteProductId, setDeleteProductId] = useState<number | null>(null);
 
     <ProductFilters onSearch={handleSearch} categories={categories} />
 
-    <button onClick={() => setShowForm(true)}>Add Product</button>
+    <button style={{fontSize:'20px'}} onClick={() => setShowForm(true)}>Add Product</button>
 
     <CustomTable
       data={products}
@@ -121,7 +123,7 @@ const [deleteProductId, setDeleteProductId] = useState<number | null>(null);
 
     <MetricsTable metrics={metrics} />
 
-    {/* ===== EDIT FORM MODAL ===== */}
+
     {editingProduct && (
       <EditProductForm
         product={editingProduct}
@@ -130,22 +132,8 @@ const [deleteProductId, setDeleteProductId] = useState<number | null>(null);
       />
     )}
 
-    {/* ===== DELETE CONFIRMATION MODAL ===== */}
     {deleteProductId !== null && (
-      <div
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: "100vw",
-          height: "100vh",
-          backgroundColor: "rgba(0,0,0,0.5)",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          zIndex: 1000,
-        }}
-      >
+      <div className="delete-overlay">
         <div
           style={{
             background: "white",

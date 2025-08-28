@@ -18,7 +18,7 @@ export default function MetricsTable({ metrics }: Props) {
   const { overallMetrics, categoryMetrics } = metrics;
 
   return (
-    <div style={{ marginBottom: "20px" }}>
+    <div style={{ marginBottom: "20px", marginTop: "60px", border: "1px solid #ccc", padding: "15px"}}>
       <h3>Inventory Metrics</h3>
 
       {/* Overall metrics */}

@@ -22,6 +22,7 @@ export default function ProductFilters({ onSearch, categories }: Props) {
   return (
     <div style={{ marginBottom: "20px", display: "flex", gap: "10px", flexWrap: "wrap" }}>
       <input
+        style={{fontSize:'14px'}}
         type="text"
         placeholder="Product name"
         value={name}
@@ -29,6 +30,7 @@ export default function ProductFilters({ onSearch, categories }: Props) {
       />
 
       <select
+        style={{fontSize:'20px'}}
         value={selectedCategory}
         onChange={(e) => setSelectedCategory(e.target.value)}
       >
@@ -41,6 +43,7 @@ export default function ProductFilters({ onSearch, categories }: Props) {
       </select>
 
       <select
+      style={{fontSize:'20px'}}
         value={stockStatus}
         onChange={(e) => setStockStatus(e.target.value as "all" | "in" | "out")}
       >
@@ -53,3 +56,6 @@ export default function ProductFilters({ onSearch, categories }: Props) {
     </div>
   );
 }
+
+
+

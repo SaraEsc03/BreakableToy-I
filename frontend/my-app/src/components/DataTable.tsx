@@ -1,4 +1,5 @@
 import { toggleStock } from "../services/productService"; // <-- import
+import '../App.css'
 
 interface Product {
   id: number;
@@ -20,7 +21,7 @@ interface Props {
   page: number;
   totalRows: number;
   onPageChange: (page: number) => void;
-  onUpdateStock: () => void; // <-- callback to refresh products after toggle
+  onUpdateStock: () => void; 
 }
 
 const columns = [
@@ -55,7 +56,7 @@ export default function CustomTable({
   };
 
   return (
-    <table style={{ width: "100%", borderCollapse: "collapse" }}>
+    <table style={{ width: "100%", borderCollapse: "collapse", marginTop: "20px" }}>
       <thead>
         <tr>
           {columns.map((col) => (
@@ -93,12 +94,10 @@ export default function CustomTable({
         ) : (
           data.map((row) => (
             <tr key={row.id}>
-              <td style={{ border: "1px solid #ccc", padding: "8px" }}>{row.name}</td>
-              <td style={{ border: "1px solid #ccc", padding: "8px" }}>{row.category}</td>
-              <td style={{ border: "1px solid #ccc", padding: "8px" }}>${row.price}</td>
-              <td style={{ border: "1px solid #ccc", padding: "8px" }}>
-                {row.expirationDate || "-"}
-              </td>
+              <td>{row.name}</td>
+              <td>{row.category}</td>
+              <td>${row.price}</td>
+              <td>{row.expirationDate || "-"}</td>
               <td style={{ border: "1px solid #ccc", padding: "8px" }}>{row.quantityInStock}</td>
               <td style={{ border: "1px solid #ccc", padding: "8px" }}>
                 {/* Toggle Stock Button */}
