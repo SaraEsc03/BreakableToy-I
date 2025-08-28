@@ -30,8 +30,7 @@ npm run dev
 Visit http://localhost:8080 to use the app.
 
 ## API Documentation
-### GET/
-
+### GET/product
 | Name     | Type       | Description                          |
 |----------|-----------|---------------------------------------|
 | name     | string    | Filters products by name (optional)   |
@@ -40,4 +39,25 @@ Visit http://localhost:8080 to use the app.
 | sort1    | string    | Primary sort (optional)               |
 | sort2    | string    | Secondary sort (optional)             |
 | page     | number    | Pagination index (optional)           |
+
+### POST/product
+| Property     | Type  |
+|----------|-----------|
+| name     | string    | 
+| category | string  | 
+| price  | float   | 
+| quantityInStock    | integer    | 
+| expirationDate    | LocalDate (optional)    |
+
+### PUT/product/{id}
+| Property     | Type  |
+|----------|-----------|
+| name     | string (optional)    | 
+| category | string (optional)   | 
+| price  | float (optional)    | 
+| quantityInStock    | integer (optional) | 
+| expirationDate    | LocalDate (optional)    |
+
+### DELETE/product/{id}
+
 
