@@ -15,16 +15,27 @@ This project is a simple Inventory App built with Spring Boot (backend) and Reac
   - Java 17+
   - Maven (for backend)
 
-## Running the App
-Backend:
+### Running the App
+### Backend:
 cd backend
 mvn spring-boot:run
 
 The API will be available at http://localhost:9090/product.
 
-## Frontend:
+### Frontend:
 cd frontend
 npm install
 npm run dev
 
-Visit http://localhost:5173 to use the app.
+Visit http://localhost:8080 to use the app.
+
+## API Documentation
+### GET/
+    | Name | Type | Descr |
+    | --- | :--- | ---: | :-: |
+    | name | string | Filters products by name (optional) |
+    | category | string[] | Filter by category (optional) |
+    | inStock | boolean | Filter by stock (optional) |
+    | sort1 | string | Primary sort (optional) |
+    | sort2 | string | Secondary sort (optional) |
+    | page | number/int | Pagination index |
