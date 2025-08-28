@@ -17,15 +17,19 @@ This project is a simple Inventory App built with Spring Boot (backend) and Reac
 
 ### Running the App
 ### Backend:
+```
 cd backend
 mvn spring-boot:run
+```
 
 The API will be available at http://localhost:9090/product.
 
 ### Frontend:
+```
 cd frontend
 npm install
 npm run dev
+```
 
 Visit http://localhost:8080 to use the app.
 
