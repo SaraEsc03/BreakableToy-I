@@ -31,11 +31,13 @@ Visit http://localhost:8080 to use the app.
 
 ## API Documentation
 ### GET/
-    | Name | Type | Descr |
-    | --- | :--- | ---: | :-: |
-    | name | string | Filters products by name (optional) |
-    | category | string[] | Filter by category (optional) |
-    | inStock | boolean | Filter by stock (optional) |
-    | sort1 | string | Primary sort (optional) |
-    | sort2 | string | Secondary sort (optional) |
-    | page | number/int | Pagination index |
+
+| Name     | Type       | Description                          |
+|----------|-----------|---------------------------------------|
+| name     | string    | Filters products by name (optional)   |
+| category | string[]  | Filter by category (optional)         |
+| inStock  | boolean   | Filter by stock (optional)            |
+| sort1    | string    | Primary sort (optional)               |
+| sort2    | string    | Secondary sort (optional)             |
+| page     | number    | Pagination index (optional)           |
+
