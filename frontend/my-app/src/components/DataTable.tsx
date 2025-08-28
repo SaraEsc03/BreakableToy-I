@@ -1,5 +1,5 @@
+import { toggleStock } from "../services/productService"; // <-- import
 
-//Product Structure (so the table knows what to expect from the data prop)
 interface Product {
   id: number;
   name: string;
@@ -9,7 +9,6 @@ interface Product {
   quantityInStock: number;
 }
 
-//Whats relevant to the table (so the table knows what to expect IN TOTAL)
 interface Props {
   data: Product[];
   loading: boolean;
@@ -21,10 +20,9 @@ interface Props {
   page: number;
   totalRows: number;
   onPageChange: (page: number) => void;
+  onUpdateStock: () => void; // <-- callback to refresh products after toggle
 }
 
-
-//Define table columns
 const columns = [
   { name: "name", label: "Name" },
   { name: "category", label: "Category" },
@@ -33,7 +31,6 @@ const columns = [
   { name: "quantityInStock", label: "Stock" },
 ];
 
-// Destructure props and define the component
 export default function CustomTable({
   data,
   loading,
@@ -45,10 +42,19 @@ export default function CustomTable({
   page,
   totalRows,
   onPageChange,
+  onUpdateStock,
 }: Props) {
-  return (
+  const handleToggleStock = async (row: Product) => {
+    try {
+      await toggleStock(row.id, row.quantityInStock > 0);
+      onUpdateStock(); // Refresh products & metrics after toggle
+    } catch (err) {
+      console.error(err);
+      alert("Error toggling stock");
+    }
+  };
 
-    //Render the table with HTML 
+  return (
     <table style={{ width: "100%", borderCollapse: "collapse" }}>
       <thead>
         <tr>
@@ -58,9 +64,7 @@ export default function CustomTable({
               style={{
                 cursor: "pointer",
                 background:
-                  sort1 === col.name || sort2 === col.name
-                    ? "#e0e0e0"
-                    : "#f5f5f5",
+                  sort1 === col.name || sort2 === col.name ? "#e0e0e0" : "#f5f5f5",
                 border: "1px solid #ccc",
                 padding: "8px",
               }}
@@ -97,6 +101,19 @@ export default function CustomTable({
               </td>
               <td style={{ border: "1px solid #ccc", padding: "8px" }}>{row.quantityInStock}</td>
               <td style={{ border: "1px solid #ccc", padding: "8px" }}>
+                {/* Toggle Stock Button */}
+                <button
+                  onClick={() => handleToggleStock(row)}
+                  style={{
+                    background: row.quantityInStock > 0 ? "red" : "green",
+                    color: "white",
+                    marginRight: "5px",
+                  }}
+                >
+                  {row.quantityInStock > 0 ? "Out of Stock" : "Restore Stock"}
+                </button>
+
+                {/* Existing actions */}
                 <button onClick={() => onEdit(row.id)} style={{ marginRight: "5px" }}>
                   Edit
                 </button>
@@ -109,10 +126,7 @@ export default function CustomTable({
       <tfoot>
         <tr>
           <td colSpan={columns.length + 1} style={{ textAlign: "center" }}>
-            <button
-              disabled={page === 0}
-              onClick={() => onPageChange(page - 1)}
-            >
+            <button disabled={page === 0} onClick={() => onPageChange(page - 1)}>
               Previous
             </button>
             <span style={{ margin: "0 10px" }}>Page {page + 1}</span>
@@ -125,9 +139,6 @@ export default function CustomTable({
           </td>
         </tr>
       </tfoot>
-
-
-
     </table>
   );
 }

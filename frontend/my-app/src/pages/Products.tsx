@@ -101,17 +101,19 @@ export default function Products() {
 
 
       <CustomTable
-        data={products}
-        loading={loading}
-        sort1={sort1 || ""}
-        sort2={sort2 || ""}
-        onSort={handleSort}
-        onEdit={(id) => console.log("Edit", id)}
-        onDelete={(id) => console.log("Delete", id)}
-        page={page}
-        totalRows={totalRows}
-        onPageChange={setPage}
-      />
+  data={products}
+  loading={loading}
+  sort1={sort1 || ""}
+  sort2={sort2 || ""}
+  onSort={handleSort}
+  onEdit={(id) => console.log("Edit", id)}
+  onDelete={(id) => console.log("Delete", id)}
+  page={page}
+  totalRows={totalRows}
+  onPageChange={setPage}
+  onUpdateStock={fetchProducts} // <-- refresh products + metrics
+/>
+
       
       <MetricsTable metrics={metrics} />
       
