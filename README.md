@@ -68,10 +68,11 @@ Visit http://localhost:8080 to use the app.
 
 ### POST/ product/ {id}/ markInStock
 
-** NOTES: **
-  - All data is stored in memory. On server restart, all products will be lost.
-  - Metrics are automatically calculated on every product fetch.
-  - Frontend fetches from API using axios and updates table dynamically.
+
+> [!NOTE]
+>  - All data is stored in memory. On server restart, all products will be lost.
+>  - Metrics are automatically calculated on every product fetch.
+>  - Frontend fetches from API using axios and updates table dynamically.
 
 
 
