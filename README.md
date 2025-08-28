@@ -34,7 +34,7 @@ npm run dev
 Visit http://localhost:8080 to use the app.
 
 ## API Documentation
-### GET/product
+### GET/ product
 | Name     | Type       | Description                          |
 |----------|-----------|---------------------------------------|
 | name     | string    | Filters products by name (optional)   |
@@ -44,7 +44,7 @@ Visit http://localhost:8080 to use the app.
 | sort2    | string    | Secondary sort (optional)             |
 | page     | number    | Pagination index (optional)           |
 
-### POST/product
+### POST/ product
 | Property     | Type  |
 |----------|-----------|
 | name     | string    | 
@@ -53,7 +53,7 @@ Visit http://localhost:8080 to use the app.
 | quantityInStock    | integer    | 
 | expirationDate    | LocalDate (optional)    |
 
-### PUT/product/{id}
+### PUT/ product/ {id}
 | Property     | Type  |
 |----------|-----------|
 | name     | string (optional)    | 
@@ -62,6 +62,16 @@ Visit http://localhost:8080 to use the app.
 | quantityInStock    | integer (optional) | 
 | expirationDate    | LocalDate (optional)    |
 
-### DELETE/product/{id}
+### DELETE/ product/ {id}
+
+### POST/ product/ {id}/ markOutOfStock
+
+### POST/ product/ {id}/ markInStock
+
+** NOTES: **
+  - All data is stored in memory. On server restart, all products will be lost.
+  - Metrics are automatically calculated on every product fetch.
+  - Frontend fetches from API using axios and updates table dynamically.
+
 
 
