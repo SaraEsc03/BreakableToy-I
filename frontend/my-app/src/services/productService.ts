@@ -35,3 +35,13 @@ export async function createProduct(product: any) {
     throw error;
   }
 }
+
+export async function updateProduct(id: number, product: any) {
+  const response = await axios.put(`/product/${id}`, product);
+  return response.data;
+}
+
+export async function deleteProduct(id: number) {
+  const response = await axios.delete(`/product/${id}`);
+  return response.data;
+}
