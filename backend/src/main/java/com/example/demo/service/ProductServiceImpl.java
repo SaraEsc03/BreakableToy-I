@@ -202,6 +202,9 @@ public class ProductServiceImpl implements ProductService {
             double averagePrice = totalProducts > 0
                     ? productsInCategory.stream().mapToDouble(Product::getPrice).average().orElse(0.0)
                     : 0.0;
+                if (Double.isNaN(averagePrice) || Double.isInfinite(averagePrice)) {
+    averagePrice = 0.0;
+}
 
             Metrics.CategoryMetrics categoryMetrics = new Metrics.CategoryMetrics(
                     totalProducts, totalStock, totalValue, averagePrice
