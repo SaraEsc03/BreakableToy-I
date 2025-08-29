@@ -64,7 +64,7 @@ export default function MetricsTable({ metrics }: Props) {
                 <td>{data.totalProducts}</td>
                 <td>{data.totalStock}</td>
                 <td>${data.totalValue.toFixed(2)}</td>
-                <td>${data.averagePrice.toFixed(2)}</td>
+                <td>${(Number(overallMetrics.averagePrice) || 0).toFixed(2)}</td>
               </tr>
             ))}
           </tbody>

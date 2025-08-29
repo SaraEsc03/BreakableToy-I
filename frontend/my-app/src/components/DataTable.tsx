@@ -1,5 +1,24 @@
-import { toggleStock } from "../services/productService"; // <-- import
+import { toggleStock } from "../services/productService"; 
 import '../App.css'
+
+const getExpirationColor = (date?: string) => {
+  if (!date) return ""; 
+  const today = new Date();
+  const exp = new Date(date);
+  const diffDays = (exp.getTime() - today.getTime()) / (1000 * 60 * 60 * 24);
+
+  if (diffDays < 0) return "#f8d7da"; 
+  if (diffDays < 7) return "#f5c6cb"; 
+  if (diffDays < 14) return "#fff3cd"; 
+  return "#d4edda"; 
+};
+
+const getStockColor = (stock: number) => {
+  if (stock > 10) return "";
+  if (stock >= 5) return "orange";
+  return "red";
+};
+
 
 interface Product {
   id: number;
@@ -21,7 +40,7 @@ interface Props {
   page: number;
   totalRows: number;
   onPageChange: (page: number) => void;
-  onUpdateStock: () => void; 
+  onUpdateStock: () => void;
 }
 
 const columns = [
@@ -48,13 +67,15 @@ export default function CustomTable({
   const handleToggleStock = async (row: Product) => {
     try {
       await toggleStock(row.id, row.quantityInStock > 0);
-      onUpdateStock(); // Refresh products & metrics after toggle
+      onUpdateStock(); 
     } catch (err) {
       console.error(err);
       alert("Error toggling stock");
     }
   };
 
+
+  // Table rendering
   return (
     <table style={{ width: "100%", borderCollapse: "collapse", marginTop: "20px" }}>
       <thead>
@@ -93,14 +114,19 @@ export default function CustomTable({
           </tr>
         ) : (
           data.map((row) => (
-            <tr key={row.id}>
+            <tr style={{ backgroundColor: getExpirationColor(row.expirationDate) }} key={row.id}>
               <td>{row.name}</td>
               <td>{row.category}</td>
               <td>${row.price}</td>
               <td>{row.expirationDate || "-"}</td>
-              <td style={{ border: "1px solid #ccc", padding: "8px" }}>{row.quantityInStock}</td>
+              <td style={{
+                border: "1px solid #ccc",
+                padding: "8px",
+                backgroundColor: getStockColor(row.quantityInStock),
+                color: row.quantityInStock < 5 ? "white" : "black", 
+              }}>{row.quantityInStock}</td>
               <td style={{ border: "1px solid #ccc", padding: "8px" }}>
-                {/* Toggle Stock Button */}
+      
                 <button
                   onClick={() => handleToggleStock(row)}
                   style={{
@@ -112,7 +138,7 @@ export default function CustomTable({
                   {row.quantityInStock > 0 ? "Out of Stock" : "Restore Stock"}
                 </button>
 
-                {/* Existing actions */}
+              
                 <button onClick={() => onEdit(row.id)} style={{ marginRight: "5px" }}>
                   Edit
                 </button>
