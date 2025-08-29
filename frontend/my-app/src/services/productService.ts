@@ -4,7 +4,7 @@ axios.defaults.baseURL = "http://localhost:9090";
 
 export async function getProducts(params: {
   name?: string;
-  category?: string;  // <- change from string[] to string
+  category?: string; 
   inStock?: boolean;
   sort1?: string;
   sort2?: string;
